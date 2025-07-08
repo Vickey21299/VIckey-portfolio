@@ -1,5 +1,12 @@
 import { motion } from "framer-motion";
 import { FaLink } from "react-icons/fa"; // Icon for project links
+// --- 1. IMPORT YOUR IMAGES HERE ---
+import chatmroImg from "../assets/projects/chatmro.png";
+import deepLearningImg from "../assets/projects/deep-learning.png";
+import federatedLearningImg from "../assets/projects/federated-learning.png";
+import irdWebsiteImg from "../assets/projects/ird-website.png";
+import wasteClassifierImg from "../assets/projects/waste-classifier.png";
+import navchetnaImg from "../assets/projects/navchetna.jpeg";
 
 // Animation variants for Framer Motion
 const fadeInUp = {
@@ -24,7 +31,7 @@ export const Projects = () => {
       description:
         "Developing a generative AI platform for MRO industries using React, Django, and WebSockets, including a custom ML model for MPN extraction.",
       tech: ["React.js", "Django", "WebSockets", "NLU","RAG","LLM", "Python"],
-      imageUrl: "/projects/chatmro.png", // Replace with your image
+      imageUrl: chatmroImg, // Replace with your image
       link: "https://www.chatmro.com/", // Replace with your link
       type: "Work Experience",
       date: "Jan 2025 – Present",
@@ -35,7 +42,7 @@ export const Projects = () => {
       description:
         "Developed deep learning models (UNet, FCN) for EM field image reconstruction, achieving a Mean Absolute Error of 0.002.",
       tech: ["PyTorch", "UNet", "GANs", "Python", "TensorFlow"],
-      imageUrl: "/projects/deep-learning.png", // Replace with your image
+      imageUrl: deepLearningImg, // Replace with your image
       link: "https://docs.google.com/presentation/d/1LZOjxnTgICsM02kUfMr8Ebj32wuvH_X2UsnJ3xIA9w0/edit?slide=id.g2a58532d049_0_0#slide=id.g2a58532d049_0_0", // Replace with your link
       type: "Personal Project",
       date: "Aug 2024 – Present",
@@ -46,7 +53,7 @@ export const Projects = () => {
       description:
         "Developed privacy-preserving federated learning models for real-time crowd detection, achieving 81.2% accuracy while ensuring data confidentiality.",
       tech: ["Federated Learning", "TensorFlow", "TFLite", "Android"],
-      imageUrl: "/projects/federated-learning.png", // Replace with your image
+      imageUrl: federatedLearningImg, // Replace with your image
       link: "", // Replace with your link
       type: "Research Intern",
       date: "May 2024 – Sept 2024",
@@ -57,7 +64,7 @@ export const Projects = () => {
       description:
         "Engineered a high-performance department website using the MEAN stack with RESTful APIs for scalable data and research paper management.",
       tech: ["Node.js", "Express.js", "MongoDB", "React"],
-      imageUrl: "/projects/ird-website.png", // Replace with your image
+      imageUrl: irdWebsiteImg, // Replace with your image
       link: "https://github.com/Vickey21299/Statistical-Machine-Learning", // Replace with your link
       type: "Personal Project",
       date: "Jan 2024 – May 2024",
@@ -68,7 +75,7 @@ export const Projects = () => {
       description:
         "Built a waste classifier using CNNs and VGG16, achieving 90% accuracy through custom architectures and data augmentation.",
       tech: ["CNNs", "VGG16", "Scikit-learn", "TensorFlow"],
-      imageUrl: "/projects/waste-classifier.png", // Replace with your image
+      imageUrl: wasteClassifierImg, // Replace with your image
       link: "https://github.com/Vickey21299/Statistical-Machine-Learning", // Replace with your link
       type: "Personal Project",
       date: "Jan 2024 – May 2024",
@@ -79,7 +86,7 @@ export const Projects = () => {
       description:
         "Developed a bilingual trainee management platform scaling to 10,000+ users and automated CI/CD with Docker and Kubernetes.",
       tech: ["Kotlin", "Django", "Docker", "Kubernetes" , "SQlite" , "Android studio"],
-      imageUrl: "/projects/navchetna.jpeg", // Replace with your image
+      imageUrl: navchetnaImg, // Replace with your image
       link: "#", // Replace with your link
       type: "Work Experience",
       date: "June 2023 – Aug 2023",
