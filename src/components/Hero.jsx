@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
-
+import heroname from "../assets/projects/myphoto.jpg";
 // --- Animation Variants ---
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -97,7 +97,7 @@ export const Hero = () => {
           animate="animate"
         >
            <motion.img
-            src={"src/assets/myphoto.jpg"}
+            src={heroname}
             alt="Vickey Kumar Profile Picture"
             className="hero-profile-image"
             whileHover={{ scale: -1 }}
