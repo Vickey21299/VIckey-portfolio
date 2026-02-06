@@ -23,7 +23,7 @@ export const Hero = () => {
   // --- 1. FIXED: Age calculation logic is now correctly inside the Hero component ---
   const [age, setAge] = useState('');
   useEffect(() => {
-    const dateOfBirth = new Date('2002-01-15T10:00:00');
+    const dateOfBirth = new Date('2002-06-17T10:00:00');
     const calculateAge = () => {
       const now = new Date();
       const ageInMs = now.getTime() - dateOfBirth.getTime();
