@@ -39,6 +39,7 @@ export const Hero = () => {
   name: "Vickey Kumar",
   pronouns: "He/Him",
   age: ${age || "23.000000000"},
+  Current Company: "HCL Software",
   location: "Noida, India",
   education: {
     degree: "B.Tech, IIIT Delhi",
@@ -56,7 +57,7 @@ export const Hero = () => {
           <motion.div className="hero-badge" variants={fadeInUp}>
             <span>👋 Hello, I'm Vickey Kumar</span>
           </motion.div>
-          <motion.h1 className="glitch" variants={fadeInUp}>
+          <motion.h1 className="glitch" data-text="TicVic Tech" variants={fadeInUp}>
             TicVic Tech
           </motion.h1>
           <motion.h2 className="hero-subtitle" variants={fadeInUp}>
@@ -65,6 +66,17 @@ export const Hero = () => {
           <motion.p className="hero-description" variants={fadeInUp}>
             Passionate about building inclusive technology, I bridge the gap between complex machine learning and accessible full-stack development.
           </motion.p>
+          <motion.div className="hero-highlights" variants={fadeInUp}>
+            <div>
+              <strong>500+</strong> enterprise clients
+            </div>
+            <div>
+              <strong>AI-first</strong> automation systems
+            </div>
+            <div>
+              <strong>24/7</strong> intelligent workflows
+            </div>
+          </motion.div>
           <motion.div className="cta-buttons" variants={staggerContainer}>
             <motion.a href="#projects" className="cta-primary" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               View My Work
@@ -82,15 +94,22 @@ export const Hero = () => {
 
         {/* --- RIGHT COLUMN: Image and Code Block --- */}
         <motion.div className="hero-image-container" initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }}>
-          <motion.img
-            src={profileImage}
-            alt="Vickey Kumar Profile Picture"
-            className="hero-profile-image"
-            // --- 2. FIXED: Hover effect now zooms in correctly ---
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          />
+          <div className="hero-profile-frame">
+            <motion.img
+              src={profileImage}
+              alt="Vickey Kumar Profile Picture"
+              className="hero-profile-image"
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            />
+            <div className="hero-ring" />
+            <div className="hero-chip" aria-hidden="true">
+              <span>AI</span>
+              <p>Autonomous systems built with modern stack </p>
+            </div>
+          </div>
           <div className="code-display">
+            <div className="code-title">Live Portfolio Profile</div>
             <SyntaxHighlighter language="javascript" style={vscDarkPlus} wrapLines={true}>
               {aboutMeCode}
             </SyntaxHighlighter>
