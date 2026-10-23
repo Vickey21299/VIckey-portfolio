@@ -1,51 +1,356 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+@import "tailwindcss";
 
-:root {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  color-scheme: dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Dark-only site: `dark:` variants (if any) resolve against the .dark class on <html>. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ------------------------------------------------------------------ */
+/* Design tokens ported from the three Stitch tailwind.config blocks   */
+/* ------------------------------------------------------------------ */
+@theme {
+  /* Hero screen */
+  --color-neonGreen: #00ff66;
+  --color-darkCharcoal: #0a0a0a;
+
+  /* Professional + Project screens (cyber.*) */
+  --color-cyber-lime: #22c55e;
+  --color-cyber-neon: #4ade80;
+  --color-cyber-electric: #10b981;
+  --color-cyber-darkbg: #050706;
+  --color-cyber-darksurface: #0b100d;
+  --color-cyber-darkborder: #162319;
+
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, monospace;
+  --font-grotesk: "Space Grotesk", system-ui, sans-serif;
+
+  --shadow-neon-glow: 0 0 25px rgba(34, 197, 94, 0.45);
+  --shadow-neon-line: 0 0 15px rgba(74, 222, 128, 0.65), 0 0 35px rgba(34, 197, 94, 0.35);
+  --shadow-node-pulse: 0 0 20px rgba(74, 222, 128, 0.9), 0 0 40px rgba(34, 197, 94, 0.5);
+  --shadow-card-hover: 0 12px 35px -8px rgba(34, 197, 94, 0.22), 0 0 20px -3px rgba(74, 222, 128, 0.15);
+
+  --animate-cursor-blink: cursorBlink 0.9s infinite ease-in-out;
+
+  @keyframes cursorBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
 }
 
-html {
-  scroll-behavior: smooth;
-  width: 100%;
+/* ------------------------------------------------------------------ */
+/* Base                                                                */
+/* ------------------------------------------------------------------ */
+@layer base {
+  html {
+    background-color: #000;
+    color-scheme: dark;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+  }
+
+  body {
+    @apply min-h-screen bg-black font-sans text-neutral-200 antialiased selection:bg-emerald-500 selection:text-black;
+    overflow-x: hidden;
+  }
+
+  /* Keep section tops clear of the 64px sticky header. */
+  section[id],
+  main[id] {
+    scroll-margin-top: 4rem;
+  }
+
+  .material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
+  }
 }
 
-body {
-  margin: 0;
-  min-width: 100%;
-  min-height: 100vh;
-  width: 100%;
+/* Component-level CSS lives in the components layer so Tailwind utilities
+   still win, matching the cascade order of the Tailwind CDN in Stitch. */
+@layer components {
+  /* ================================================================ */
+  /* HERO (final-hero)                                                 */
+  /* ================================================================ */
+  .hero-neon-glow {
+    text-shadow: 0 0 10px rgba(0, 255, 102, 0.5);
+  }
+  .hero-badge-border {
+    border: 1px solid rgba(0, 255, 102, 0.3);
+  }
+  .hero-caret {
+    animation: var(--animate-cursor-blink);
+  }
+
+  @keyframes heroMarquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .hero-marquee {
+    display: flex;
+    width: max-content;
+    animation: heroMarquee 30s linear infinite;
+  }
+  .hero-marquee:hover {
+    animation-play-state: paused;
+  }
+  .hero-portrait-mask {
+    mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
+  }
+
+  /* ================================================================ */
+  /* SHARED cyber background (professional + projects)                */
+  /* ================================================================ */
+  .cyber-grid-bg {
+    background-image:
+      radial-gradient(circle at 50% 0%, rgba(34, 197, 94, 0.16) 0%, transparent 70%),
+      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 100% 100%, 48px 48px, 48px 48px;
+  }
+  /* Projects screen used a slightly softer top glow. */
+  .cyber-grid-bg--soft {
+    background-image:
+      radial-gradient(circle at 50% 0%, rgba(34, 197, 94, 0.12) 0%, transparent 60%),
+      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  }
+  /* Hero -> cyber transition: fade the grid in from pure black. */
+  .cyber-fade-top {
+    position: relative;
+    isolation: isolate;
+  }
+  .cyber-fade-top::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 7rem;
+    background: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.6) 45%, transparent 100%);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  /* ================================================================ */
+  /* PROFESSIONAL timeline (final-professional)                        */
+  /* ================================================================ */
+  .timeline-laser-track {
+    background: linear-gradient(
+      180deg,
+      rgba(34, 197, 94, 0.08) 0%,
+      rgba(34, 197, 94, 0.25) 20%,
+      rgba(34, 197, 94, 0.25) 80%,
+      rgba(34, 197, 94, 0.08) 100%
+    );
+  }
+  .timeline-laser-active {
+    background: linear-gradient(180deg, #86efac 0%, #4ade80 40%, #22c55e 80%, #10b981 100%);
+    box-shadow: 0 0 20px rgba(74, 222, 128, 0.7), 0 0 40px rgba(34, 197, 94, 0.55);
+    transform-origin: top center;
+    will-change: height;
+    transition: height 0.06s linear;
+  }
+  .timeline-laser-head {
+    box-shadow: 0 0 24px #4ade80, 0 0 45px #22c55e, 0 0 60px rgba(74, 222, 128, 0.8);
+    animation: pulseLaserHead 1.6s infinite alternate ease-in-out;
+  }
+  @keyframes pulseLaserHead {
+    0% { transform: scale(0.9); opacity: 0.85; }
+    100% { transform: scale(1.35); opacity: 1; }
+  }
+
+  .timeline-row {
+    transition: opacity 0.22s ease, transform 0.22s ease;
+  }
+
+  .reveal-card {
+    opacity: 0;
+    will-change: transform, opacity;
+    transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal-card.reveal-left {
+    transform: translate3d(-60px, 30px, 0) scale(0.96) rotate(-1.5deg);
+  }
+  .reveal-card.reveal-right {
+    transform: translate3d(60px, 30px, 0) scale(0.96) rotate(1.5deg);
+  }
+  .reveal-card.is-revealed {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+  }
+
+  .stagger-item {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal-card.is-revealed .stagger-item {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-card.is-revealed .stagger-1 { transition-delay: 0.12s; }
+  .reveal-card.is-revealed .stagger-2 { transition-delay: 0.22s; }
+  .reveal-card.is-revealed .stagger-3 { transition-delay: 0.34s; }
+  .reveal-card.is-revealed .stagger-4 { transition-delay: 0.46s; }
+
+  .timeline-card {
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s ease, border-color 0.28s ease;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+  }
+  .timeline-card:hover {
+    box-shadow: 0 20px 45px -10px rgba(34, 197, 94, 0.32), 0 0 28px -2px rgba(74, 222, 128, 0.25);
+  }
+
+  .timeline-node {
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+  }
+  .timeline-node.active-node {
+    /* Tailwind v4 centers the node with the `translate` property, so this composes. */
+    transform: scale(1.3);
+    border-color: #4ade80;
+    box-shadow: 0 0 32px rgba(74, 222, 128, 1), 0 0 60px rgba(34, 197, 94, 0.7);
+  }
+  .timeline-node .pulse-halo {
+    opacity: 0;
+    transform: scale(0.6);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .timeline-node.active-node .pulse-halo {
+    opacity: 1;
+    animation: ripplePulse 2.4s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  @keyframes ripplePulse {
+    0% { transform: scale(0.8); opacity: 0.85; }
+    50% { transform: scale(2.3); opacity: 0.25; }
+    100% { transform: scale(3); opacity: 0; }
+  }
+
+  .tech-pill {
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .tech-pill:hover {
+    transform: translateY(-2px) scale(1.06);
+    border-color: rgba(74, 222, 128, 0.6) !important;
+    box-shadow: 0 0 12px rgba(34, 197, 94, 0.3);
+  }
+
+  .constellation-cluster {
+    perspective: 1200px;
+    --px: 0;
+    --py: 0;
+  }
+  /* Parallax wrapper: lets the float keyframes keep running on the chip. */
+  .constellation-parallax {
+    transform: translate(calc(var(--px) * var(--depth) * 1px), calc(var(--py) * var(--depth) * 1px));
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .floating-orbit-item {
+    will-change: transform;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+  }
+  .floating-orbit-item:hover {
+    transform: translateY(-8px) scale(1.1) !important;
+    z-index: 30;
+    box-shadow: 0 16px 30px -6px rgba(34, 197, 94, 0.45), 0 0 25px rgba(74, 222, 128, 0.35) !important;
+    border-color: rgba(74, 222, 128, 0.8) !important;
+  }
+
+  @keyframes floatA {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-7px) rotate(1.5deg); }
+  }
+  @keyframes floatB {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(8px) rotate(-2deg); }
+  }
+  @keyframes floatC {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-5px) rotate(-1deg); }
+  }
+  .anim-float-a { animation: floatA 6s ease-in-out infinite; }
+  .anim-float-b { animation: floatB 7.5s ease-in-out infinite; }
+  .anim-float-c { animation: floatC 5s ease-in-out infinite; }
+
+  .metric-card {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .metric-card:hover {
+    transform: translateY(-4px) scale(1.02);
+    border-color: rgba(74, 222, 128, 0.6);
+    box-shadow: 0 10px 30px -8px rgba(34, 197, 94, 0.25);
+  }
+
+  /* ================================================================ */
+  /* PROJECTS deck (final-project)                                     */
+  /* ================================================================ */
+  .terminal-glow-emerald {
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.8), 0 0 25px -4px rgba(34, 197, 94, 0.25);
+  }
+  .stack-card {
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), filter 0.45s ease;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+  }
+
+  @keyframes toolsMarquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
+  }
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: toolsMarquee 20s linear infinite;
+  }
+  .marquee-container:hover .marquee-track {
+    animation-play-state: paused;
+  }
+  .tech-chip {
+    transition: all 0.2s ease;
+  }
+  .tech-chip:hover {
+    transform: translateY(-2px);
+    border-color: rgba(74, 222, 128, 0.8);
+    box-shadow: 0 0 12px rgba(34, 197, 94, 0.35);
+  }
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
-/* Selection color */
-::selection {
-  background: var(--primary-color);
-  color: white;
+/* ------------------------------------------------------------------ */
+/* Reduced motion                                                      */
+/* ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-card,
+  .stagger-item,
+  .timeline-card,
+  .tech-pill,
+  .metric-card,
+  .anim-float-a,
+  .anim-float-b,
+  .anim-float-c,
+  .floating-orbit-item,
+  .constellation-parallax {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  .timeline-node.active-node .pulse-halo,
+  .timeline-laser-head,
+  .hero-caret {
+    animation: none !important;
+  }
+  .hero-marquee,
+  .marquee-track {
+    animation: none !important;
+  }
+  .marquee-container {
+    overflow-x: auto !important;
+  }
+  .stack-card {
+    transition: opacity 0.2s linear !important;
+  }
 }

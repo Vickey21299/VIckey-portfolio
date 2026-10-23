@@ -1,51 +1,31 @@
-import "./App.css";
-import { Toaster } from 'react-hot-toast'; // Import the Toaster for notifications
-import { Navbar } from "./components/Navbar";
-import { Hero } from "./components/Hero";
-import { Projects } from "./components/Projects";
-import { Contact } from "./components/Contact";
-import { motion } from "framer-motion";
+import Contact from './components/Contact.jsx'
+import Footer from './components/Footer.jsx'
+import Header from './components/Header.jsx'
+import Hero from './components/Hero.jsx'
+import ProgressBar from './components/ProgressBar.jsx'
+import ImpactMetrics from './components/professional/ImpactMetrics.jsx'
+import Professional from './components/professional/Professional.jsx'
+import Projects from './components/projects/Projects.jsx'
 
-function App() {
+export default function App() {
   return (
-    <div className="app loaded">
-      {/* Toaster component for pop-up notifications from the contact form */}
-      <Toaster 
-        position="top-center"
-        toastOptions={{
-          // Define default options
-          duration: 5000,
-          style: {
-            background: '#363636',
-            color: '#fff',
-          },
-          // Default options for specific types
-          success: {
-            duration: 3000,
-            theme: {
-              primary: 'green',
-              secondary: 'black',
-            },
-          },
-        }}
-      />
-
-      <Navbar />
-      <Hero />
-      <Projects />
-      <Contact />
-
-      <motion.footer
-        className="footer"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
+    <>
+      <a
+        href="#trajectory"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[70] focus:px-3 focus:py-2 focus:rounded-lg focus:bg-emerald-500 focus:text-black focus:font-mono focus:text-xs"
       >
-        <p> &copy; 2025 Vickey Kumar. All rights reserved.</p>
-      </motion.footer>
-    </div>
-  );
+        Skip to content
+      </a>
+      <ProgressBar />
+      <Header />
+      <main>
+        <Hero />
+        <Professional />
+        <Projects />
+        <ImpactMetrics />
+        <Contact />
+      </main>
+      <Footer />
+    </>
+  )
 }
-
-export default App;

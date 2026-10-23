@@ -1,122 +1,105 @@
-import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
-import profileImage from "../assets/projects/myphoto.jpg"; // Correctly import the image
+import portrait from '../assets/portrait.webp'
+import { hero, site } from '../data/site.js'
+import { useRoleTicker } from '../hooks/useRoleTicker.js'
 
-// --- Animation Variants ---
-const fadeInUp = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6 },
-};
+const WATERMARK_SETS = [0, 1]
+const WATERMARK_ITEMS = [0, 1, 2]
 
-const staggerContainer = {
-  animate: {
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
+function Watermark() {
+  return (
+    <div
+      className="absolute inset-x-0 top-1/2 -translate-y-[58%] pointer-events-none select-none z-0 overflow-hidden flex items-center opacity-80"
+      data-purpose="watermark-marquee"
+      aria-hidden="true"
+    >
+      <div className="hero-marquee whitespace-nowrap will-change-transform flex items-center">
+        {WATERMARK_SETS.map((set) => (
+          <div key={set} className="flex items-center">
+            {WATERMARK_ITEMS.map((item) => (
+              <div
+                key={item}
+                className="inline-flex items-center mx-6 sm:mx-10 text-7xl sm:text-[140px] tracking-wider leading-none select-none text-white/[0.18]"
+              >
+                <span className="font-extrabold tracking-widest">{site.brand.primary}</span>
+                <span className="ml-2 sm:ml-4 font-light text-neonGreen/30">{site.brand.secondary}</span>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
 
-export const Hero = () => {
-  // --- 1. FIXED: Age calculation logic is now correctly inside the Hero component ---
-  const [age, setAge] = useState('');
-  useEffect(() => {
-    const dateOfBirth = new Date('2002-06-17T10:00:00');
-    const calculateAge = () => {
-      const now = new Date();
-      const ageInMs = now.getTime() - dateOfBirth.getTime();
-      const ageInYears = ageInMs / (1000 * 60 * 60 * 24 * 365.25);
-      setAge(ageInYears.toFixed(9));
-    };
-    const interval = setInterval(calculateAge, 50);
-    return () => clearInterval(interval);
-  }, []);
-
-  // This string will now be correctly updated by the age state
-  const aboutMeCode = `const VickeyKumar = {
-  name: "Vickey Kumar",
-  pronouns: "He/Him",
-  age: ${age || "23.000000000"},
-  Current Company: "HCL Software",
-  location: "Noida, India",
-  education: {
-    degree: "B.Tech, IIIT Delhi",
-    focus: "CS & Applied Mathematics"
-  },
-  passions: ["AI/ML", "Full-Stack", "Open-Source"]
-};`;
+export default function Hero() {
+  const role = useRoleTicker(hero.roles, hero.timing)
 
   return (
-    <motion.section id="home" className="hero">
-      <div className="hero-container">
-        
-        {/* --- LEFT COLUMN: Text Content --- */}
-        <motion.div className="hero-content" variants={staggerContainer} initial="initial" animate="animate">
-          <motion.div className="hero-badge" variants={fadeInUp}>
-            <span>👋 Hello, I'm Vickey Kumar</span>
-          </motion.div>
-          <motion.h1 className="glitch" data-text="TicVic Tech" variants={fadeInUp}>
-            TicVic Tech
-          </motion.h1>
-          <motion.h2 className="hero-subtitle" variants={fadeInUp}>
-            Software Developer & AI/ML Engineer
-          </motion.h2>
-          <motion.p className="hero-description" variants={fadeInUp}>
-            Passionate about building inclusive technology, I bridge the gap between complex machine learning and accessible full-stack development.
-          </motion.p>
-          <motion.div className="hero-highlights" variants={fadeInUp}>
-            <div>
-              <strong>500+</strong> enterprise clients
-            </div>
-            <div>
-              <strong>AI-first</strong> automation systems
-            </div>
-            <div>
-              <strong>24/7</strong> intelligent workflows
-            </div>
-          </motion.div>
-          <motion.div className="cta-buttons" variants={staggerContainer}>
-            <motion.a href="#projects" className="cta-primary" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              View My Work
-            </motion.a>
-            <motion.a href="#contact" className="cta-secondary" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              Contact Me
-            </motion.a>
-          </motion.div>
-          <motion.div className="social-links" variants={staggerContainer}>
-            <motion.a href="https://github.com/Vickey21299/" target="_blank" whileHover={{ y: -3 }}><i className="fab fa-github"></i></motion.a>
-            <motion.a href="https://www.linkedin.com/in/vickey-kumar-593b7b284/" target="_blank" whileHover={{ y: -3 }}><i className="fab fa-linkedin"></i></motion.a>
-            <motion.a href="https://x.com/Vickey21299er" target="_blank" whileHover={{ y: -3 }}><i className="fab fa-twitter"></i></motion.a>
-          </motion.div>
-        </motion.div>
+    <section
+      id="overview"
+      className="font-grotesk relative flex flex-col items-center justify-center min-h-[calc(100svh-4rem)] px-4 pb-12 text-center bg-black text-white overflow-hidden"
+      data-purpose="hero-content"
+    >
+      <Watermark />
 
-        {/* --- RIGHT COLUMN: Image and Code Block --- */}
-        <motion.div className="hero-image-container" initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }}>
-          <div className="hero-profile-frame">
-            <motion.img
-              src={profileImage}
-              alt="Vickey Kumar Profile Picture"
-              className="hero-profile-image"
-              whileHover={{ scale: 1.05 }}
-              transition={{ type: "spring", stiffness: 300 }}
-            />
-            <div className="hero-ring" />
-            <div className="hero-chip" aria-hidden="true">
-              <span>AI</span>
-              <p>Autonomous systems built with modern stack </p>
-            </div>
-          </div>
-          <div className="code-display">
-            <div className="code-title">Live Portfolio Profile</div>
-            <SyntaxHighlighter language="javascript" style={vscDarkPlus} wrapLines={true}>
-              {aboutMeCode}
-            </SyntaxHighlighter>
-          </div>
-        </motion.div>
-        
+      {/* Portrait */}
+      <div className="relative w-full max-w-[620px] h-[580px] sm:h-[640px] flex items-center justify-center pointer-events-none" data-purpose="hero-avatar">
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-0 rounded-full bg-neonGreen/5 blur-3xl" />
+        <img
+          alt="Portrait of Vickey Kumar"
+          className="hero-portrait-mask w-full h-full object-cover object-top contrast-125"
+          src={portrait}
+          width="800"
+          height="800"
+          fetchPriority="high"
+        />
       </div>
-    </motion.section>
-  );
-};
+
+      {/* Name, role ticker, tagline, status pill */}
+      <div className="relative z-20 flex flex-col items-center -mt-36 sm:-mt-44 text-center px-4">
+        <div
+          className="relative z-20 mb-3 tracking-[0.25em] text-neonGreen text-xs font-semibold uppercase drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]"
+          data-purpose="name-badge"
+        >
+          {site.name.toUpperCase()}
+        </div>
+        <h1
+          className="relative z-20 text-4xl sm:text-6xl font-bold tracking-tight mb-3 text-white flex items-center justify-center min-h-[1.3em] px-2 drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]"
+          data-purpose="main-headline"
+        >
+          <span className="sr-only">
+            {site.name} — {hero.roles.join(', ')}
+          </span>
+          <span className="inline-block transition-all duration-200" aria-hidden="true">
+            {role}
+          </span>
+          <span className="inline-block ml-1 text-neonGreen hero-caret font-light select-none" aria-hidden="true">
+            |
+          </span>
+        </h1>
+        <p
+          className="relative z-20 text-xs sm:text-sm tracking-wider text-zinc-300 mb-8 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]"
+          data-purpose="subtitle"
+        >
+          I SHIP AI INTO <span className="text-neonGreen font-semibold">PRODUCTION</span>.
+        </p>
+        <div className="relative z-20" data-purpose="status-badge">
+          <a
+            className="inline-flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 px-4 py-2 rounded-full bg-zinc-900/90 hero-badge-border text-[11px] tracking-wide text-zinc-300 hover:text-white transition-all shadow-xl backdrop-blur-sm"
+            href={hero.statusTarget}
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-neonGreen" aria-hidden="true" />
+            {hero.statusLead} <span className="text-white font-semibold">{hero.statusCompany}</span>
+            <span className="text-neonGreen" aria-hidden="true">
+              ↓
+            </span>
+          </a>
+        </div>
+      </div>
+
+      {/* Soft hand-off into the cyber-grid sections below */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-black z-10" aria-hidden="true" />
+    </section>
+  )
+}

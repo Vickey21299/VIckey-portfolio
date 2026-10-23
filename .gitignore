@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local env (EmailJS keys)
+.env
+
+# Raw Stitch design exports (reference only, re-fetchable)
+stitch-export/
