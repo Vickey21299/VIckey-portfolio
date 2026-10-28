@@ -21,8 +21,8 @@ export const navItems = [
 ]
 
 export const hero = {
-  roles: ['AI Engineer', 'GenAI Engineer', 'LLM Systems Engineer', 'ML Engineer', 'Agentic Systems Architect'],
-  timing: { type: 90, erase: 45, hold: 2200, gap: 350 },
+  roles: ['AI Engineer', 'ML Engineer', 'GenAI Engineer'],
+  timing: { type: 110, erase: 60, hold: 3500, gap: 500 },
   statusLead: 'CURRENTLY BUILDING AT',
   statusCompany: 'GENERAL MACHINES',
   statusTarget: '#trajectory',
